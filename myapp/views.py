@@ -91,7 +91,7 @@ def add_to_cart(request):
 
             food_check = Food.objects.get(pk=food_id)
             if food_check:
-                if Cart.objects.get(cart_user=request.user, cart_food=food_check):
+                if Cart.objects.filter(cart_user=request.user, cart_food=food_check):
                     adding_qty = Cart.objects.get(cart_user=request.user, cart_food=food_check)
                     adding_qty.cart_food_qty += food_qty
                     adding_qty.save()
@@ -123,6 +123,19 @@ def remove_from_cart(request):
                 return JsonResponse({'status':'Product not in the cart'})
         else:    
             return JsonResponse({'status':'No such product'})
+    
+    return redirect('/')
+
+def place_order(request):
+    if request.method == 'POST':
+        mycart = Cart.objects.filter(cart_user=request.user)
+        table = Table.objects.get(table_user = request.user)
+        if mycart:
+            for item in mycart:
+                OrderItem.objects.create(orderitem_user=request.user, order_table=table, ordered_food=item.cart_food, order_price=item.cart_food.food_price, order_quantity=item.cart_food_qty)
+            
+            Cart.objects.filter(cart_user=request.user).delete()
+            return JsonResponse({'status':'Order placed'})
     
     return redirect('/')
         

@@ -32,6 +32,14 @@
                     <div class="col-sm-2">{% widthratio item.cart_food.food_price 1 item.cart_food_qty %}</div>
                 </div><br><hr>
             {% endfor %}
+            <div class="row mb-4">
+                <div class="offset-10">
+                    <form action="#">
+                        {% csrf_token %}
+                        <button type="button" class="btn btn-dark place_order">Place Order</button>
+                    </form>                    
+                </div>
+            </div>
         {% else %}
             <p>no items in the cart</p>
         {% endif %}
@@ -41,6 +49,7 @@
 <script type="text/javascript">
 
     $(document).ready(function(){
+
         $('.remove_from_cart').on('click', function(){
             var food_id = $(this).closest('.product_data').find('.food_id').val()
             var token = $('input[name=csrfmiddlewaretoken]').val();
@@ -61,6 +70,24 @@
                         }
             });
         });
+
+        $('.place_order').on('click', function(){
+            var token = $('input[name=csrfmiddlewaretoken]').val();
+            $.ajax({
+                        method: 'POST',
+                        url: '../place_order',
+                        data: {
+                            csrfmiddlewaretoken: token 
+                        },
+                        success: function (response) {
+                            console.log('response')
+                            console.log(response.status)
+                            alert(response.status)
+                            location.reload()
+                        }
+            });
+        });
+
     });
 
 </script>
