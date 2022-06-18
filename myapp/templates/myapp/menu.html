@@ -1,0 +1,84 @@
+{% extends "myapp/template.html" %}
+{% load static %}
+
+
+{% block content %}
+
+<div class="accordion" id="accordionExample">
+    {% for cat in category %}
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne{{cat.name}}">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne{{cat.name}}" aria-expanded="true" aria-controls="collapseOne{{cat.name}}">
+                    <strong>{{ cat.name }}</strong>
+                </button>
+            </h2>
+            <div id="collapseOne{{cat.name}}" class="accordion-collapse collapse show" aria-labelledby="headingOne{{cat.name}}">
+                <div class="accordion-body">
+                    {% for item in food %}
+                        {% if item.category == cat %}
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-12 col-sm-6 order-last order-sm-1 align-self-center">
+                                        <h2>{{ item.food_name }}</h2>
+                                        <h6>Rs. {{ item.food_price }}</h6>
+                                        <p class="d-none d-sm-block">{{ item.food_desciption }}</p>
+                                    </div>
+                                    <div class="col-8 col-sm-4 order-first order-sm-2 align-self-center">
+                                        <img src="{{ item.food_image_1.url }}" height="100px">
+                                    </div>
+                                    <div class="col-4 col-sm-2 order-sm-3 align-self-center justify-content-center">
+                                        <form action="#" class="product_data">
+                                            {% csrf_token %}
+                                            <input type="hidden" id="food_id" value="{{item.id}}">
+                                            <div class="container">
+                                                <div class="row">
+                                                    <div class="btn-group btn-group-sm" role="group" aria-label="Basic mixed styles example">
+                                                        <button type="button" class="btn dec" id="dec">-</button>
+                                                        <button type="button" class="btn product_qty" value="1">1</button>
+                                                        <button type="button" class="btn inc" id="inc">+</button>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <button type="button" class="btn btn-dark" id="add_to_cart">Add to cart</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            <hr>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+    {% endfor %}
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.inc').on('click', function(){
+            var qty_now = parseInt($(this).closest('.product_data').find('.product_qty').val()) + 1
+            //$('#product_qty').val(qty_now)
+            $(this).closest('.product_data').find('.product_qty').prop('value', qty_now)
+            $(this).closest('.product_data').find('.product_qty').html(qty_now)
+        })
+        $('.dec').on('click', function(){
+            var qty_now = parseInt($(this).closest('.product_data').find('.product_qty').val()) - 1
+            if (qty_now >=0){
+                //$('#product_qty').val(qty_now)
+            $(this).closest('.product_data').find('.product_qty').prop('value', qty_now)
+            $(this).closest('.product_data').find('.product_qty').html(qty_now)
+            }
+            else{
+                $(this).closest('.product_data').find('.product_qty').prop('value', 0)
+                $(this).closest('.product_data').find('.product_qty').html(0)
+            }
+        })
+    })
+</script>
+
+
+
+
+{% endblock %}

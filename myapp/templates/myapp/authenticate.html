@@ -1,0 +1,25 @@
+{% extends "myapp/template.html" %}
+{% load static %}
+
+
+{% block content %}
+
+<div class="container">
+    <h1>Authenticate User</h1>
+    <form action="#" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Phone Number</label>
+          <input required type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="phone">
+          <div id="emailHelp" class="form-text">We'll never share your phone number with anyone else.</div>
+        </div>
+        <div class="mb-3">
+            <label for="formFile" class="form-label">Default file input example</label>
+            <input required class="form-control" type="file" name="qr">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+
+{% endblock %}

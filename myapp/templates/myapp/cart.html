@@ -1,0 +1,16 @@
+{% extends "myapp/template.html" %}
+{% load static %}
+
+
+{% block content %}
+<div class="container">
+    <h1>CART PAGE</h1>
+    {% if mycart %}
+    {% else %}
+        <p>no items in the cart</p>
+    {% endif %}
+</div>
+
+
+
+{% endblock %}
