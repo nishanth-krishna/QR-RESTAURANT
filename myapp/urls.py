@@ -11,4 +11,8 @@ urlpatterns = [
     path('cart/', views.CartView.as_view(), name='cart'),
     path('template/', views.templateview, name='template'),
     path("accounts/", include("django.contrib.auth.urls")),
+
+
+
+    path('add_to_cart', views.add_to_cart, name='add_to_cart'),
 ]

@@ -6,6 +6,10 @@
 <div class="container">
     <h1>CART PAGE</h1>
     {% if mycart %}
+        {% for item in mycart %}
+            <h1>{{ item.cart_food }}</h1>
+            <h2>{{ item.cart_food_qty }}</h2>
+        {% endfor %}
     {% else %}
         <p>no items in the cart</p>
     {% endif %}

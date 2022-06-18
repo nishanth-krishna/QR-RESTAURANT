@@ -7,6 +7,7 @@ from QR_Restaurant import settings
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import JsonResponse
 import cv2
 
 # Create your views here.
@@ -45,15 +46,17 @@ class MenuView(LoginRequiredMixin,View):
     def get(self, request):
         category = Category.objects.all()
         food = Food.objects.all()
+        table = Table.objects.get(table_user=request.user)
         ctx = {
             'category':category,
-            'food':food
+            'food':food,
+            'table':table,
         }
         return render(request, 'myapp/menu.html', ctx)
         
 class CartView(LoginRequiredMixin,View):
     def get(self, request):
-        mycart = Cart.objects.all()
+        mycart = Cart.objects.filter(cart_user=request.user)
         ctx = {
             'mycart':mycart,
         }
@@ -73,4 +76,34 @@ def readQR(my_dict):
     lol = "static/uploads/"+mystring.split('/')[-1]
     a,b,c = d.detectAndDecode(cv2.imread(lol))
     return int(a)
+
+def add_to_cart(request):
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            food_id = int(request.POST.get('food_id'))
+            food_qty = int(request.POST.get('food_qty'))
+            table_id = int(request.POST.get('table_id'))
+            table = Table.objects.get(table_number = table_id)
+
+            food_check = Food.objects.get(pk=food_id)
+            if food_check:
+                if Cart.objects.get(cart_user=request.user, cart_food=food_check):
+                    adding_qty = Cart.objects.get(cart_user=request.user, cart_food=food_check)
+                    adding_qty.cart_food_qty += food_qty
+                    adding_qty.save()
+                    return JsonResponse({'status':'it is already in cart broooo so I add the quantity'})
+                else:
+                    if food_check.food_quantity_available>food_qty:
+                        Cart.objects.create(cart_user=request.user, cart_food=food_check, cart_food_qty=food_qty, cart_table=table)
+                        return JsonResponse({'status':'Added to cart'})
+                    else:    
+                        return JsonResponse({'status':'Only '+str(food_check.food_quantity_available)+' units available'})
+            
+            else:
+                return JsonResponse({'status':'no such product found'})    
+
+
+        else:
+            return JsonResponse({'status':'Login to continue'})
+    return redirect('/')
         

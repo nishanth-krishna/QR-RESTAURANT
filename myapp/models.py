@@ -23,7 +23,7 @@ class Table(models.Model):
 
 
     def __str__(self):
-        return '_____ {} _____'.format(self.table_number)
+        return '{}'.format(self.table_number)
 
 # Create your models here.
 class Category(models.Model):

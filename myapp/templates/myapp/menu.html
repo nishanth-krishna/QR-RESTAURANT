@@ -3,7 +3,6 @@
 
 
 {% block content %}
-
 <div class="accordion" id="accordionExample">
     {% for cat in category %}
         <div class="accordion-item">
@@ -29,7 +28,8 @@
                                     <div class="col-4 col-sm-2 order-sm-3 align-self-center justify-content-center">
                                         <form action="#" class="product_data">
                                             {% csrf_token %}
-                                            <input type="hidden" id="food_id" value="{{item.id}}">
+                                            <input type="hidden" class="food_id" value="{{item.id}}">
+                                            <input type="hidden" class="table_id" value="{{table.table_number}}">
                                             <div class="container">
                                                 <div class="row">
                                                     <div class="btn-group btn-group-sm" role="group" aria-label="Basic mixed styles example">
@@ -39,7 +39,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="row">
-                                                    <button type="button" class="btn btn-dark" id="add_to_cart">Add to cart</button>
+                                                    <button type="button" class="btn btn-dark add_to_cart">Add to cart</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -75,6 +75,39 @@
                 $(this).closest('.product_data').find('.product_qty').html(0)
             }
         })
+        $('.add_to_cart').on('click', function(){
+            var food_id = $(this).closest('.product_data').find('.food_id').val();
+            var table_id = $(this).closest('.product_data').find('.table_id').val();
+            var food_qty = parseInt($(this).closest('.product_data').find('.product_qty').val())
+            var token = $('input[name=csrfmiddlewaretoken]').val();
+            console.log(food_id)
+            console.log(table_id)
+            console.log(food_qty)
+            console.log(token)
+            // var prod_id = $('#prod_id').val();
+            // var prod_s_price = $('#prod_s_price').val();
+            // var token = $('input[name=csrfmiddlewaretoken]').val();
+            // var product_qty = parseInt($('#product_qty').val())
+
+            // $('#come').html('ID is '+prod_id+' and price is '+prod_s_price)
+            // console.log('clicked')
+
+            $.ajax({
+                method: 'POST',
+                url: '../add_to_cart',
+                data: {
+                    'food_id': food_id,
+                    'food_qty': food_qty,
+                    'table_id':table_id,
+                    csrfmiddlewaretoken: token 
+                },
+                success: function (response) {
+                console.log('response')
+                console.log(response.status)
+                alert(response.status)
+                }
+            });
+        });
     })
 </script>
 
