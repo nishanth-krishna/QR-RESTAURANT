@@ -57,8 +57,12 @@ class MenuView(LoginRequiredMixin,View):
 class CartView(LoginRequiredMixin,View):
     def get(self, request):
         mycart = Cart.objects.filter(cart_user=request.user)
+        total_price=0
+        for item in mycart:
+            total_price += item.cart_food.food_price*item.cart_food_qty
         ctx = {
             'mycart':mycart,
+            'total_price':total_price,
         }
         return render(request, 'myapp/cart.html', ctx)
 
@@ -105,5 +109,20 @@ def add_to_cart(request):
 
         else:
             return JsonResponse({'status':'Login to continue'})
+    return redirect('/')
+
+def remove_from_cart(request):
+    if request.method == 'POST':
+        food_id = int(request.POST.get('food_id'))
+        product_check = Food.objects.get(pk=food_id)
+        if product_check:
+            if Cart.objects.filter(cart_user=request.user, cart_food=product_check):
+                Cart.objects.filter(cart_user=request.user, cart_food=product_check).delete()
+                return JsonResponse({'status':'Product removed from the cart'})
+            else:
+                return JsonResponse({'status':'Product not in the cart'})
+        else:    
+            return JsonResponse({'status':'No such product'})
+    
     return redirect('/')
         
