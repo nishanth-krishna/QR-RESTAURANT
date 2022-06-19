@@ -24,7 +24,7 @@
                     <div class="col-sm-2">
                         <form action="#" class="product_data">
                             {% csrf_token %}
-                            <input type="hidden" class="food_id" value="{{ item.id }}">
+                            <input type="hidden" class="food_id" value="{{ item.cart_food.id }}">
                             <button type="button" class="btn btn-dark remove_from_cart">Remove cart</button>
                         </form>
                     </div>
