@@ -11,25 +11,25 @@
         {% if mycart %}
             <br><hr>
             <div class="row">
-                <div class="col-sm-3"><strong>Image</strong></div>
-                <div class="col-sm-3"><strong>Item</strong></div>
-                <div class="col-sm-2"><strong>Cart</strong></div>
-                <div class="col-sm-2"><strong>Quantity</strong></div>
-                <div class="col-sm-2"><strong>Price</strong></div>
+                <div class="col-sm-3 d-none d-sm-block"><strong>Image</strong></div>
+                <div class="col-3 col-sm-3"><strong>Item</strong></div>
+                <div class="col-3 col-sm-2"><strong>Cart</strong></div>
+                <div class="col-3 col-sm-2"><strong>Quantity</strong></div>
+                <div class="col-3 col-sm-2"><strong>Price</strong></div>
             </div><br><hr>
             {% for item in mycart %}
                 <div class="row">
-                    <div class="col-sm-3"><img src="{{ item.cart_food.food_image_1.url }}" height="100px"></div>
-                    <div class="col-sm-3">{{ item.cart_food }}</div>
-                    <div class="col-sm-2">
+                    <div class="col-sm-3 d-none d-sm-block"><img src="{{ item.cart_food.food_image_1.url }}" height="100px"></div>
+                    <div class="col-3 col-sm-3">{{ item.cart_food }}</div>
+                    <div class="col-3 col-sm-2">
                         <form action="#" class="product_data">
                             {% csrf_token %}
                             <input type="hidden" class="food_id" value="{{ item.cart_food.id }}">
                             <button type="button" class="btn btn-dark remove_from_cart">Remove cart</button>
                         </form>
                     </div>
-                    <div class="col-sm-2">{{ item.cart_food_qty }}</div>
-                    <div class="col-sm-2">{% widthratio item.cart_food.food_price 1 item.cart_food_qty %}</div>
+                    <div class="col-3 col-sm-2">{{ item.cart_food_qty }}</div>
+                    <div class="col-3 col-sm-2">{% widthratio item.cart_food.food_price 1 item.cart_food_qty %}</div>
                 </div><br><hr>
             {% endfor %}
             <div class="row mb-4">
