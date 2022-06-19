@@ -1,0 +1,39 @@
+{% extends "myapp/template.html" %}
+{% load static %}
+
+
+{% block content %}
+<div class="container">
+    <div class="row mt-4">
+        <h1>Your Orders</h1>
+    </div>
+    <div class="container">
+        {% if orders %}
+            <br><hr>
+            <div class="row">
+                <div class="col-4 col-sm-4"><strong>Item</strong></div>
+                <div class="col-4 col-sm-4"><strong>Quantity</strong></div>
+                <div class="col-4 col-sm-4"><strong>Price</strong></div>
+            </div><br><hr>
+            {% for item in orders %}
+                <div class="row">
+                    <div class="col-4 col-sm-4">{{ item.ordered_food }}</div>
+                    <div class="col-4 col-sm-4">{{ item.order_quantity }}</div>
+                    <div class="col-4 col-sm-4">{% widthratio item.ordered_food.food_price 1 item.order_quantity %}.00</div>
+                </div><br><hr>
+            {% endfor %}
+            <div class="row mb-4">
+                <div class="offset-6 col-2 col-sm-2">
+                    <strong>Toatl Price:</strong>
+                </div>
+                <div class="col-2 col-sm-4">
+                    <strong>{{ total_price }}0</strong>
+                </div>
+            </div>
+        {% else %}
+            <p>no items in the cart</p>
+        {% endif %}
+    </div>
+    
+</div>
+{% endblock %}

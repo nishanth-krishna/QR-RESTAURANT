@@ -66,6 +66,20 @@ class CartView(LoginRequiredMixin,View):
         }
         return render(request, 'myapp/cart.html', ctx)
 
+class OrdersView(View):
+    def get(self, request):
+        orders = OrderItem.objects.filter(orderitem_user=request.user)
+        total_price = 0
+        for item in orders:
+            total_price += (item.order_price)*(item.order_quantity)
+        ctx = {
+            'orders':orders,
+            'total_price':total_price,
+        }
+        return render(request, 'myapp/orders.html', ctx)
+
+
+
 
 
 
