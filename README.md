@@ -1,4 +1,25 @@
 # QR-RESTAURANT
+
+Food dine in application - Scanning particular QR from table user can view the restaurants menu listing and put the items in cart and place an order.
+
+Features are as follows:
+
+<strong>User</strong>
+
+-> Authentication<br>
+-> Different QR Scan for Different Tables<br>
+-> Menu listing<br>
+-> Add items to car<br>
+-> Place an order from particular Table<br>
+      
+
+Restaurant
+
+-> Receives order with table specific to the QR Code that user scans<br>
+-> Logout User and that Table will be free <br>
+-> Can check Free and Occupied Tables in a Restaurant.<br>
+
+
 <img width="1413" alt="Screenshot 2022-06-19 at 8 19 18 PM" src="https://user-images.githubusercontent.com/65019575/174487667-28164f29-dfa9-4b64-bf00-c6e8e41cb4b0.png">
 
 <img width="1413" alt="Screenshot 2022-06-19 at 8 19 26 PM" src="https://user-images.githubusercontent.com/65019575/174487685-019a561a-5e6f-40fb-b8a1-5e56c07ada83.png">
